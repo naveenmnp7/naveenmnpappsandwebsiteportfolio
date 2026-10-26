@@ -16,6 +16,7 @@ import FloatingWhatsApp from "./components/FloatingWhatsApp";
 const Templates = lazy(() => import("./components/Templates"));
 const Portfolio = lazy(() => import("./components/Portfolio"));
 const Pricing = lazy(() => import("./components/Pricing"));
+const Apps = lazy(() => import("./components/Apps"));
 
 const Placeholder = ({ id }: { id: string }) => <div id={id} className="min-h-[60vh]" aria-hidden />;
 
@@ -33,6 +34,9 @@ export default function App() {
         <Offer />
         <Suspense fallback={<Placeholder id="pricing" />}>
           <Pricing />
+        </Suspense>
+        <Suspense fallback={<Placeholder id="apps" />}>
+          <Apps />
         </Suspense>
         <Suspense fallback={<Placeholder id="portfolio" />}>
           <Portfolio />

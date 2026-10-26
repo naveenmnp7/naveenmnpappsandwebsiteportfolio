@@ -69,6 +69,10 @@ export const PRICES = {
   businessOffer: 4999,
   professional: 9999,
   ecommerceFrom: 14999,
+  // Mobile apps — STARTING prices (final quote depends on features). Edit freely.
+  appSmall: 25000,
+  appBusiness: 50000,
+  appAdvanced: 100000,
 } as const;
 
 export const PRICING_DISCLAIMER =
@@ -151,6 +155,44 @@ export const PLANS: Plan[] = [
   },
 ];
 
+export interface AppPlan {
+  id: string;
+  name: string;
+  tagline: string;
+  from: number;
+  plus?: boolean; // show "+" after the price (open-ended)
+  features: string[];
+}
+
+/** Mobile app tiers — prices come from PRICES above. */
+export const APP_PLANS: AppPlan[] = [
+  {
+    id: "app-small",
+    name: "Small App",
+    tagline: "One clear job, done well.",
+    from: PRICES.appSmall,
+    features: ["Android app", "Up to 5 screens", "Clean modern UI", "Simple forms and lists", "Call / WhatsApp buttons", "Testing and APK handover"],
+  },
+  {
+    id: "app-business",
+    name: "Business App",
+    tagline: "For teams and growing shops.",
+    from: PRICES.appBusiness,
+    features: ["Up to 12 screens", "User login and roles", "Database with cloud sync", "Search, filters and reports", "Push notifications", "Admin dashboard"],
+  },
+  {
+    id: "app-advanced",
+    name: "Advanced App",
+    tagline: "Custom workflows and integrations.",
+    from: PRICES.appAdvanced,
+    plus: true,
+    features: ["Custom features and workflows", "Multi-role access control", "Third-party API integrations", "Payments support (gateway fees extra)", "Play Store publishing help", "Priority support"],
+  },
+];
+
+export const APP_DISCLAIMER =
+  "App prices are starting prices; the final quotation depends on your features and screens. Play Store / App Store developer account fees, hosting and servers, SMS, payment-gateway and other third-party service charges are not included unless listed in your written quotation.";
+
 export const OFFER_FEATURES = [
   "Professional website design",
   "Mobile-responsive layout",
@@ -174,14 +216,16 @@ export const WEBSITE_TYPES = [
   "Portfolio Website",
   "Landing Page",
   "Website Redesign",
+  "Mobile App",
   "Not sure yet",
 ] as const;
 
 export const BUDGETS = [
   "Under ₹5,000",
   "₹5,000 – ₹10,000",
-  "₹10,000 – ₹20,000",
-  "₹20,000+",
+  "₹10,000 – ₹25,000",
+  "₹25,000 – ₹50,000",
+  "₹50,000+",
   "Not sure yet",
 ] as const;
 
@@ -190,6 +234,7 @@ export const NAV_LINKS = [
   { label: "Services", href: "#services" },
   { label: "Templates", href: "#templates" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Apps", href: "#apps" },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Process", href: "#process" },
   { label: "FAQ", href: "#faq" },

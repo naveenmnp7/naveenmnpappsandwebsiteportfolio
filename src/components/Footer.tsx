@@ -7,7 +7,7 @@ const QUICK = [
 ];
 const SERVICES = [
   { l: "Business Websites", h: "#services" }, { l: "Restaurant Websites", h: "#services" }, { l: "Solar Company Websites", h: "#services" },
-  { l: "Real Estate Websites", h: "#services" }, { l: "E-commerce Websites", h: "#services" },
+  { l: "Real Estate Websites", h: "#services" }, { l: "E-commerce Websites", h: "#services" }, { l: "Mobile Apps", h: "#apps" },
 ];
 const SOCIALS = [
   { name: "Instagram", icon: Instagram, href: SITE.social.instagram },

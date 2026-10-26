@@ -10,14 +10,14 @@ import type { PreviewKey } from "./previews";
 const PreviewModal = lazy(() => import("./PreviewModal"));
 
 const SERVICES = [
-  { icon: Building2, title: "Business Website Development", type: "Business Website", preview: "business" as PreviewKey, url: "northwind-partners.com", desc: "Professional company websites that build trust and bring in enquiries." },
-  { icon: UtensilsCrossed, title: "Restaurant Website Design", type: "Restaurant Website", preview: "restaurant" as PreviewKey, url: "ember-and-oak.com", desc: "Mouth-watering menus, location maps and easy table reservations." },
-  { icon: Sun, title: "Solar Company Websites", type: "Solar Company Website", preview: "solar" as PreviewKey, url: "brightgrid-solar.com", desc: "Showcase installations and savings, and capture solar leads 24/7." },
-  { icon: Home, title: "Real Estate Websites", type: "Real Estate Website", preview: "realestate" as PreviewKey, url: "aura-estates.com", desc: "Elegant property listings with fast, direct enquiry buttons." },
-  { icon: ShoppingCart, title: "E-commerce Websites", type: "E-commerce Website", preview: "ecommerce" as PreviewKey, url: "shoply-store.com", desc: "Online stores with product catalogues, cart and checkout support." },
-  { icon: User, title: "Portfolio Websites", type: "Portfolio Website", preview: "portfolio" as PreviewKey, url: "alexray.studio", desc: "Stand out with a creative portfolio that shows your best work." },
-  { icon: LayoutTemplate, title: "Landing Page Development", type: "Landing Page", preview: "solar" as PreviewKey, url: "brightgrid-solar.com", desc: "Focused, high-converting pages for campaigns and product launches." },
-  { icon: RefreshCcw, title: "Website Redesign", type: "Website Redesign", preview: "business" as PreviewKey, url: "northwind-partners.com", desc: "Modernise an outdated site with a faster, cleaner, mobile-first look." },
+  { icon: Building2, title: "Business Website Development", type: "Business Website", preview: "svc-business" as PreviewKey, url: "vertex-logistics.in", desc: "Professional company websites that build trust and bring in enquiries." },
+  { icon: UtensilsCrossed, title: "Restaurant Website Design", type: "Restaurant Website", preview: "svc-restaurant" as PreviewKey, url: "spice-route-biryani.in", desc: "Mouth-watering menus, location maps and easy table reservations." },
+  { icon: Sun, title: "Solar Company Websites", type: "Solar Company Website", preview: "svc-solar" as PreviewKey, url: "sunpeak-energy.in", desc: "Showcase installations and savings, and capture solar leads 24/7." },
+  { icon: Home, title: "Real Estate Websites", type: "Real Estate Website", preview: "svc-realestate" as PreviewKey, url: "greenvalley-layouts.in", desc: "Elegant property listings with fast, direct enquiry buttons." },
+  { icon: ShoppingCart, title: "E-commerce Websites", type: "E-commerce Website", preview: "svc-ecommerce" as PreviewKey, url: "zari-and-co.in", desc: "Online stores with product catalogues, cart and checkout support." },
+  { icon: User, title: "Portfolio Websites", type: "Portfolio Website", preview: "svc-portfolio" as PreviewKey, url: "meerarao.photo", desc: "Stand out with a creative portfolio that shows your best work." },
+  { icon: LayoutTemplate, title: "Landing Page Development", type: "Landing Page", preview: "svc-landing" as PreviewKey, url: "fitstart-30days.in", desc: "Focused, high-converting pages for campaigns and product launches." },
+  { icon: RefreshCcw, title: "Website Redesign", type: "Website Redesign", preview: "svc-redesign" as PreviewKey, url: "before-and-after.demo", desc: "Modernise an outdated site with a faster, cleaner, mobile-first look." },
 ];
 
 export default function Services() {

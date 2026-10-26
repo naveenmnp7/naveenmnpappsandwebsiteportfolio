@@ -138,7 +138,7 @@ export default function Contact() {
               <input id="enquiry-phone" type="tel" inputMode="tel" className="field" autoComplete="tel" value={values.phone} onChange={set("phone")} placeholder="+91 98765 43210" {...describe("phone")} />
             </Field>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field id="enquiry-websiteType" label="Website type" error={errors.websiteType}>
+              <Field id="enquiry-websiteType" label="Project type" error={errors.websiteType}>
                 <select id="enquiry-websiteType" className="field" value={values.websiteType} onChange={set("websiteType")} {...describe("websiteType")}>
                   <option value="">Select type…</option>
                   {WEBSITE_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}

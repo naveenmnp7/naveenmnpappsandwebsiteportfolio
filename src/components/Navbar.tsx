@@ -54,7 +54,7 @@ export default function Navbar() {
           <Logo />
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Primary" className="hidden items-center gap-1 xl:flex">
           {NAV_LINKS.map((l) => (
             <a
               key={l.href}
@@ -74,7 +74,7 @@ export default function Navbar() {
           </button>
           <button
             type="button"
-            className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-white lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-white/5 text-white xl:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -94,7 +94,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="overflow-hidden lg:hidden"
+            className="overflow-hidden xl:hidden"
           >
             <ul className="flex flex-col gap-1 px-5 pb-6 pt-2 sm:px-8">
               {NAV_LINKS.map((l, i) => (
