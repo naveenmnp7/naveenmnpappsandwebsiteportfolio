@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Smartphone, X } from "lucide-react";
 import Logo from "./ui/Logo";
 import { NAV_LINKS } from "../config/site";
 import { useEnquiry } from "../hooks/useEnquiry";
@@ -69,6 +69,9 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <a href="#apps" className="btn-ghost !px-4 !py-2.5" aria-label="Get an app — jump to the mobile apps section">
+            <Smartphone size={16} /> Get App
+          </a>
           <button type="button" className="btn-primary hidden !px-5 !py-2.5 sm:inline-flex" onClick={() => startEnquiry({})}>
             Get Your Website
           </button>

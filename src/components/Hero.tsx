@@ -1,33 +1,13 @@
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Gauge, MessageCircle, Search, Sparkles } from "lucide-react";
 import BrowserFrame from "./ui/BrowserFrame";
 import ScaledPreview from "./previews/ScaledPreview";
 import { PREVIEWS } from "./previews";
 import { TEMPLATES } from "../data/templates";
 import { useEnquiry } from "../hooks/useEnquiry";
+import { useRotatingIndex } from "../hooks/useRotatingIndex";
 
 const ease = [0.22, 1, 0.36, 1] as const;
-const ROTATE_MS = 4500;
-
-/**
- * Cycles through the sample websites. Starts on a random one at every page load,
- * pauses while the visitor hovers/focuses the monitor, and stays still for people
- * who prefer reduced motion (they can still pick a site with the dots).
- */
-function useRotatingIndex(count: number) {
-  const reduce = useReducedMotion();
-  const [index, setIndex] = useState(() => Math.floor(Math.random() * count));
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (reduce || paused) return;
-    const id = window.setInterval(() => setIndex((n) => (n + 1) % count), ROTATE_MS);
-    return () => window.clearInterval(id); // restarts the timer after a manual pick
-  }, [reduce, paused, count, index]);
-
-  return { index, setIndex, setPaused };
-}
 
 function PhoneScreen() {
   return (
@@ -71,7 +51,7 @@ function FloatChip({ icon: Icon, label, className, delay }: { icon: typeof Gauge
 
 export default function Hero() {
   const { startEnquiry } = useEnquiry();
-  const { index, setIndex, setPaused } = useRotatingIndex(TEMPLATES.length);
+  const { index, setIndex, setPaused, ref } = useRotatingIndex(TEMPLATES.length, 4500);
   const current = TEMPLATES[index];
   const CurrentPreview = PREVIEWS[current.id];
   return (
@@ -143,6 +123,7 @@ export default function Hero() {
           >
             <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-blue/30 via-brand-violet/20 to-transparent blur-2xl" />
             <div
+              ref={ref}
               className="glow-border rounded-2xl p-[3px]"
               onMouseEnter={() => setPaused(true)}
               onMouseLeave={() => setPaused(false)}

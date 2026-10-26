@@ -1,72 +1,41 @@
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
-import { Bell, Calendar, Check, ClipboardList, Home, PhoneCall, Search, ShoppingBag, Smartphone, User } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Check, ChevronLeft, ChevronRight, Smartphone } from "lucide-react";
 import SectionHeading from "./ui/SectionHeading";
 import Reveal from "./ui/Reveal";
 import { APP_DISCLAIMER, APP_PLANS, formatPrice } from "../config/site";
 import { useEnquiry } from "../hooks/useEnquiry";
+import { useRotatingIndex } from "../hooks/useRotatingIndex";
+import { BOOKING_APPS, CRM_APPS, STORE_APPS } from "../data/appThemes";
+import { BookingScreen, CrmScreen, StoreScreen } from "./apps/screens";
 
-/* ---------- phone mockups (concept designs, drawn in code) ---------- */
+/* ---------- rotating phone mockups: 3 app models x 10 concept samples ---------- */
 
-function Phone({ label, children }: { label: string; children: ReactNode }) {
+function PhoneRotator<T>({ label, apps, brand, render, interval }: { label: string; apps: T[]; brand: (a: T) => string; render: (a: T, i: number) => ReactNode; interval: number }) {
+  const { index, setIndex, setPaused, ref } = useRotatingIndex<HTMLElement>(apps.length, interval);
+  const app = apps[index];
+  const step = (d: number) => setIndex((index + d + apps.length) % apps.length);
   return (
-    <figure className="mx-auto w-[220px] shrink-0 snap-center">
+    <figure ref={ref} className="mx-auto w-[220px] shrink-0 snap-center" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div className="glow-border rounded-[2rem] bg-ink-900 p-2 shadow-2xl shadow-black/60">
         <div className="relative aspect-[9/18.5] overflow-hidden rounded-[1.6rem] bg-white text-[10px]">
+          <AnimatePresence initial={false}>
+            <motion.div key={index} className="absolute inset-0" initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.5 }}>
+              {render(app, index)}
+            </motion.div>
+          </AnimatePresence>
           <div className="absolute left-1/2 top-1.5 z-10 h-3.5 w-16 -translate-x-1/2 rounded-full bg-black" aria-hidden />
-          {children}
         </div>
       </div>
-      <figcaption className="mt-3 text-center text-xs font-medium text-slate-400">{label}</figcaption>
+      <figcaption className="mt-3 text-center">
+        <p className="text-xs font-semibold text-slate-200">{label}</p>
+        <div className="mt-1 flex items-center justify-center gap-1">
+          <button type="button" onClick={() => step(-1)} aria-label={`Previous ${label} sample`} className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 hover:bg-white/10"><ChevronLeft size={16} /></button>
+          <span className="min-w-[8.5rem] text-xs text-slate-400" aria-live="off">{brand(app)} · {index + 1}/{apps.length}</span>
+          <button type="button" onClick={() => step(1)} aria-label={`Next ${label} sample`} className="grid h-8 w-8 place-items-center rounded-lg text-slate-300 hover:bg-white/10"><ChevronRight size={16} /></button>
+        </div>
+      </figcaption>
     </figure>
-  );
-}
-
-function BookingScreen() {
-  const slots = ["10:00", "11:30", "1:00", "3:30", "5:00", "6:30"];
-  return (
-    <div className="flex h-full flex-col bg-[#fdf2f8] pt-7 text-[#4a1d3a]">
-      <div className="px-3 pb-2"><p className="text-[9px] text-[#9d6b88]">Book your visit</p><p className="text-sm font-extrabold">Glow Salon</p></div>
-      <div className="flex gap-1.5 px-3">{["Mon", "Tue", "Wed", "Thu"].map((d, i) => <div key={d} className={`flex-1 rounded-lg py-1.5 text-center ${i === 1 ? "bg-[#db2777] text-white" : "bg-white"}`}><p className="text-[8px]">{d}</p><p className="font-bold">{12 + i}</p></div>)}</div>
-      <p className="px-3 pb-1 pt-3 font-bold">Choose a time</p>
-      <div className="grid grid-cols-3 gap-1.5 px-3">{slots.map((t, i) => <div key={t} className={`rounded-lg py-2 text-center font-semibold ${i === 2 ? "bg-[#db2777] text-white" : "bg-white"}`}>{t}</div>)}</div>
-      <p className="px-3 pb-1 pt-3 font-bold">Service</p>
-      <div className="mx-3 rounded-xl bg-white p-2.5"><p className="font-bold">Hair spa</p><p className="text-[#9d6b88]">45 min</p></div>
-      <div className="mt-auto p-3"><div className="rounded-xl bg-[#db2777] py-2.5 text-center font-bold text-white">Confirm booking</div></div>
-    </div>
-  );
-}
-
-function CrmScreen() {
-  const rows = [{ n: "Ravi Kumar", s: "Follow-up", c: "bg-amber-100 text-amber-700" }, { n: "Anitha Rao", s: "Interested", c: "bg-emerald-100 text-emerald-700" }, { n: "Suresh B.", s: "New lead", c: "bg-sky-100 text-sky-700" }, { n: "Lakshmi D.", s: "Call back", c: "bg-violet-100 text-violet-700" }];
-  return (
-    <div className="flex h-full flex-col bg-[#f1f5f9] pt-7 text-slate-800">
-      <div className="bg-[#1d4ed8] px-3 pb-4 pt-2 text-white"><p className="text-[9px] opacity-80">Today</p><p className="text-sm font-extrabold">My calls</p>
-        <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/25"><div className="h-full w-2/5 rounded-full bg-white" /></div></div>
-      <div className="space-y-1.5 p-2.5">
-        {rows.map((r) => (
-          <div key={r.n} className="flex items-center gap-2 rounded-xl bg-white p-2">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-slate-200 font-bold">{r.n[0]}</span>
-            <div className="min-w-0 flex-1"><p className="truncate font-bold">{r.n}</p><span className={`rounded-full px-1.5 py-0.5 text-[8px] font-semibold ${r.c}`}>{r.s}</span></div>
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#22c55e] text-white"><PhoneCall size={12} /></span>
-          </div>
-        ))}
-      </div>
-      <div className="mt-auto flex justify-around border-t bg-white py-2 text-slate-400"><ClipboardList size={16} className="text-[#1d4ed8]" /><Calendar size={16} /><User size={16} /></div>
-    </div>
-  );
-}
-
-function StoreScreen() {
-  const cards = [{ n: "Everyday Tote", p: "₹899", c: "from-[#fde68a] to-[#f59e0b]" }, { n: "Canvas Shoes", p: "₹1,499", c: "from-[#bae6fd] to-[#38bdf8]" }];
-  return (
-    <div className="flex h-full flex-col bg-white pt-7 text-slate-800">
-      <div className="flex items-center gap-1.5 px-3 pb-2"><div className="flex flex-1 items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1.5 text-slate-400"><Search size={11} /> Search</div><Bell size={14} /></div>
-      <div className="mx-3 rounded-xl bg-gradient-to-r from-[#7c3aed] to-[#ec4899] p-3 text-white"><p className="text-[8px] opacity-80">New season</p><p className="text-sm font-extrabold leading-tight">Up to 30% off</p></div>
-      <p className="px-3 pb-1 pt-3 font-bold">Popular</p>
-      <div className="grid grid-cols-2 gap-2 px-3">{cards.map((c) => <div key={c.n} className="rounded-xl border border-slate-100 p-1.5"><div className={`aspect-square rounded-lg bg-gradient-to-br ${c.c}`} /><p className="mt-1 font-bold">{c.n}</p><p className="font-extrabold text-[#7c3aed]">{c.p}</p></div>)}</div>
-      <div className="mt-auto flex justify-around border-t py-2 text-slate-400"><Home size={16} className="text-[#7c3aed]" /><Search size={16} /><ShoppingBag size={16} /><User size={16} /></div>
-    </div>
   );
 }
 
@@ -87,11 +56,11 @@ export default function Apps() {
       {/* concept phones */}
       <Reveal>
         <div className="-mx-5 flex snap-x gap-6 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-3 md:justify-items-center md:overflow-visible md:px-0">
-          <Phone label="Booking app — concept"><BookingScreen /></Phone>
-          <Phone label="CRM / telecalling app — concept"><CrmScreen /></Phone>
-          <Phone label="Store app — concept"><StoreScreen /></Phone>
+          <PhoneRotator label="Booking apps" apps={BOOKING_APPS} brand={(a) => a.brand} interval={3800} render={(a, i) => <BookingScreen app={a} seed={i} />} />
+          <PhoneRotator label="CRM / telecalling apps" apps={CRM_APPS} brand={(a) => a.brand} interval={4200} render={(a, i) => <CrmScreen app={a} seed={i} />} />
+          <PhoneRotator label="Store / ordering apps" apps={STORE_APPS} brand={(a) => a.brand} interval={4600} render={(a) => <StoreScreen app={a} />} />
         </div>
-        <p className="mt-2 text-center text-xs text-slate-500">Sample screens shown are concept designs, not real client apps.</p>
+        <p className="mt-2 text-center text-xs text-slate-500">10 concept samples in each app type — sample screens only, not real client apps.</p>
       </Reveal>
 
       {/* tiers */}
