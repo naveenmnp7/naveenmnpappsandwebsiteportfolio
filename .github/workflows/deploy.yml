@@ -23,7 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       # No package-lock.json yet, so use `npm install`. Once you commit one, `npm ci` is faster.
       - run: npm install
