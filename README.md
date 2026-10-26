@@ -52,7 +52,7 @@ npm run preview    # test the production build locally
 ```
 The `dist/` folder is a static site. Deploy to any of:
 - **Vercel / Netlify / Cloudflare Pages:** import the repo, build command `npm run build`, output `dist`.
-- **GitHub Pages:** set `base: "/<repo-name>/"` in `vite.config.ts`, build, publish `dist`.
+- **GitHub Pages (automatic):** push to `main`; `.github/workflows/deploy.yml` builds and deploys, and sets the base path for you. In the repo go to Settings → Pages → Source → **GitHub Actions**.
 - **cPanel / any hosting:** upload the contents of `dist/` to `public_html`.
 
 Before going live also update the `<title>`, description and `og:image` URL in `index.html`

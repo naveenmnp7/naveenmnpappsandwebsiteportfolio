@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+}
+
+body {
+  @apply bg-ink-950 font-sans text-slate-300 antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(42, 123, 255, 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(124, 92, 255, 0.1), transparent 60%);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(42, 123, 255, 0.4);
+  color: #fff;
+}
+
+/* Visible focus states for keyboard users */
+:focus-visible {
+  outline: 2px solid #00c3ff;
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 20px 50px -20px rgba(0, 0, 0, 0.6);
+  }
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0, 195, 255, 0.7), rgba(124, 92, 255, 0.15) 40%, rgba(42, 123, 255, 0.6));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(100deg, #00c3ff 0%, #2a7bff 45%, #7c5cff 100%);
+  }
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl px-6 py-3.5 text-sm font-semibold text-white transition-transform duration-200 active:scale-[0.97];
+    background-image: linear-gradient(100deg, #00a8ff, #2a7bff 50%, #7c5cff);
+    background-size: 200% 100%;
+    box-shadow: 0 10px 30px -10px rgba(42, 123, 255, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  }
+  .btn-primary:hover {
+    background-position: 100% 0;
+    transform: translateY(-2px);
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition duration-200 hover:border-brand-cyan/60 hover:bg-white/[0.08] active:scale-[0.97];
+  }
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-ink-900/80 px-4 py-3 text-sm text-white placeholder:text-slate-500 transition focus:border-brand-cyan/70 focus:outline-none focus:ring-2 focus:ring-brand-cyan/30;
+  }
+  .section {
+    @apply relative mx-auto w-full max-w-7xl px-5 py-20 sm:px-8 md:py-28;
+  }
+}
