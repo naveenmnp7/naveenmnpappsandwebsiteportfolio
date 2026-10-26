@@ -1,11 +1,33 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Gauge, MessageCircle, Search, Sparkles } from "lucide-react";
 import BrowserFrame from "./ui/BrowserFrame";
 import ScaledPreview from "./previews/ScaledPreview";
-import BusinessPreview from "./previews/BusinessPreview";
+import { PREVIEWS } from "./previews";
+import { TEMPLATES } from "../data/templates";
 import { useEnquiry } from "../hooks/useEnquiry";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const ROTATE_MS = 4500;
+
+/**
+ * Cycles through the sample websites. Starts on a random one at every page load,
+ * pauses while the visitor hovers/focuses the monitor, and stays still for people
+ * who prefer reduced motion (they can still pick a site with the dots).
+ */
+function useRotatingIndex(count: number) {
+  const reduce = useReducedMotion();
+  const [index, setIndex] = useState(() => Math.floor(Math.random() * count));
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (reduce || paused) return;
+    const id = window.setInterval(() => setIndex((n) => (n + 1) % count), ROTATE_MS);
+    return () => window.clearInterval(id); // restarts the timer after a manual pick
+  }, [reduce, paused, count, index]);
+
+  return { index, setIndex, setPaused };
+}
 
 function PhoneScreen() {
   return (
@@ -49,6 +71,9 @@ function FloatChip({ icon: Icon, label, className, delay }: { icon: typeof Gauge
 
 export default function Hero() {
   const { startEnquiry } = useEnquiry();
+  const { index, setIndex, setPaused } = useRotatingIndex(TEMPLATES.length);
+  const current = TEMPLATES[index];
+  const CurrentPreview = PREVIEWS[current.id];
   return (
     <section id="home" className="relative isolate overflow-hidden pt-[72px]" aria-labelledby="hero-title">
       {/* animated gradient orbs + glowing lines */}
@@ -117,15 +142,45 @@ export default function Hero() {
             className="relative"
           >
             <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-br from-brand-blue/30 via-brand-violet/20 to-transparent blur-2xl" />
-            <div className="glow-border rounded-2xl p-[3px]">
-              <BrowserFrame url="northwind-partners.com" aspect="aspect-[16/10]">
-                <ScaledPreview><BusinessPreview /></ScaledPreview>
+            <div
+              className="glow-border rounded-2xl p-[3px]"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+            >
+              <BrowserFrame url={current.url} aspect="aspect-[16/10]">
+                <AnimatePresence initial={false}>
+                  <motion.div
+                    key={current.id}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease }}
+                  >
+                    <ScaledPreview><CurrentPreview /></ScaledPreview>
+                  </motion.div>
+                </AnimatePresence>
               </BrowserFrame>
             </div>
             {/* monitor stand */}
             <div className="mx-auto h-6 w-24 bg-gradient-to-b from-slate-600 to-slate-800 [clip-path:polygon(15%_0,85%_0,100%_100%,0_100%)]" />
             <div className="mx-auto h-2 w-44 rounded-full bg-slate-700" />
           </motion.div>
+
+          <div className="mt-5 flex items-center justify-center gap-1" role="group" aria-label="Choose a sample website to preview">
+            {TEMPLATES.map((t, n) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setIndex(n)}
+                aria-label={`Show ${t.name} sample`}
+                aria-current={n === index}
+                className="grid h-6 place-items-center px-1"
+              >
+                <span className={`block h-1.5 rounded-full transition-all duration-300 ${n === index ? "w-7 bg-brand-cyan" : "w-1.5 bg-white/25 hover:bg-white/50"}`} />
+              </button>
+            ))}
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 60, rotate: 8 }}
