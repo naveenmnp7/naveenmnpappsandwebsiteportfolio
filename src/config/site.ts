@@ -6,6 +6,16 @@
  * ============================================================
  */
 
+/**
+ * ★ YOUR PHONE NUMBER — change it here ONCE.
+ * Digits only, country code first (India = 91). It is used for the call button,
+ * the displayed number AND WhatsApp, so all three always stay in sync.
+ */
+const PHONE = "918790529335";
+
+/** "918790529335" -> "+91 87905 29335" */
+const displayPhone = (n: string) => `+${n.slice(0, 2)} ${n.slice(2, 7)} ${n.slice(7)}`;
+
 export const SITE = {
   name: "MNP APPS",
   tagline: "Creative Web Development Agency",
@@ -13,12 +23,11 @@ export const SITE = {
     "We design and build premium, mobile-responsive websites for restaurants, solar companies, real estate, e-commerce and growing small businesses.",
 
   /**
-   * WhatsApp number in INTERNATIONAL format, digits only (no +, spaces or dashes).
-   * Example for India: "919876543210"
-   * ⚠️ PLACEHOLDER — replace before launch. While it is the placeholder, the site
-   * shows a visible setup warning on WhatsApp buttons instead of silently failing.
+   * WhatsApp number (international format, digits only). Defaults to the same
+   * number as PHONE above. To use a different WhatsApp number later, replace
+   * `PHONE` here with a string such as "919876543210".
    */
-  whatsappNumber: "91XXXXXXXXXX",
+  whatsappNumber: PHONE,
 
   /**
    * Optional: a form-delivery endpoint (e.g. Formspree "https://formspree.io/f/xxxxxx").
@@ -28,8 +37,9 @@ export const SITE = {
   formEndpoint: "",
 
   contact: {
-    email: "hello@your-domain.example", // PLACEHOLDER
-    phoneDisplay: "+91 XXXXX XXXXX", // PLACEHOLDER
+    email: "mnpapps.in@gmail.com",
+    phone: PHONE, // used for the tel: call link
+    phoneDisplay: displayPhone(PHONE),
     location: "India · Working with clients worldwide", // edit as needed
     hours: "Mon – Sat, 10:00 AM – 7:00 PM IST", // edit as needed
   },

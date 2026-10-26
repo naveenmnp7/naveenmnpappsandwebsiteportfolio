@@ -108,15 +108,20 @@ export default function Contact() {
           <p className="mt-4 max-w-md text-lg text-slate-400">Tell us about your business. We'll help you choose the right website.</p>
 
           <ul className="mt-8 space-y-4 text-sm">
-            <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><Mail size={18} /></span> {SITE.contact.email}</li>
-            <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><Phone size={18} /></span> {SITE.contact.phoneDisplay}</li>
+            <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><Mail size={18} /></span> <a className="hover:text-brand-cyan" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></li>
+            <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><Phone size={18} /></span> <a className="hover:text-brand-cyan" href={`tel:+${SITE.contact.phone}`}>{SITE.contact.phoneDisplay}</a></li>
             <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><MapPin size={18} /></span> {SITE.contact.location}</li>
             <li className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-brand-cyan"><Clock size={18} /></span> {SITE.contact.hours}</li>
           </ul>
 
-          <button type="button" onClick={() => openWhatsApp(messages.general())} className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#25d366] px-6 py-3.5 text-sm font-bold text-[#04301a] transition hover:brightness-110 active:scale-[0.97]">
-            <MessageCircle size={18} /> Chat on WhatsApp
-          </button>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <button type="button" onClick={() => openWhatsApp(messages.general())} className="inline-flex items-center gap-2 rounded-xl bg-[#25d366] px-6 py-3.5 text-sm font-bold text-[#04301a] transition hover:brightness-110 active:scale-[0.97]">
+              <MessageCircle size={18} /> Chat on WhatsApp
+            </button>
+            <a href={`tel:+${SITE.contact.phone}`} className="btn-ghost">
+              <Phone size={17} /> Call {SITE.contact.phoneDisplay}
+            </a>
+          </div>
         </Reveal>
 
         <Reveal delay={0.1}>

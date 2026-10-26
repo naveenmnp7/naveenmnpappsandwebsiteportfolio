@@ -59,8 +59,8 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-sm font-bold uppercase tracking-widest text-white">Contact</h4>
             <ul className="mt-4 space-y-3 text-sm text-slate-400">
-              <li className="flex items-center gap-2.5"><Mail size={15} className="text-brand-cyan" /> {SITE.contact.email}</li>
-              <li className="flex items-center gap-2.5"><Phone size={15} className="text-brand-cyan" /> {SITE.contact.phoneDisplay}</li>
+              <li className="flex items-center gap-2.5"><Mail size={15} className="text-brand-cyan" /> <a className="transition hover:text-brand-cyan" href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a></li>
+              <li className="flex items-center gap-2.5"><Phone size={15} className="text-brand-cyan" /> <a className="transition hover:text-brand-cyan" href={`tel:+${SITE.contact.phone}`}>{SITE.contact.phoneDisplay}</a></li>
               <li className="flex items-center gap-2.5"><MapPin size={15} className="text-brand-cyan" /> {SITE.contact.location}</li>
             </ul>
           </div>

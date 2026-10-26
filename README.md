@@ -18,10 +18,10 @@ npm run dev        # http://localhost:5173
 
 | What | Setting |
 |------|---------|
-| **WhatsApp number** | `SITE.whatsappNumber` — digits only with country code, e.g. `919876543210`. Until set, WhatsApp buttons show a setup alert instead of opening a wrong chat. |
+| **Phone + WhatsApp number** | `PHONE` at the top of the file — digits only with country code, e.g. `919876543210`. One change updates the call button, the displayed number and WhatsApp together. |
 | **Prices** | `PRICES` object (Starter, Business regular/offer, Professional, E-commerce) |
 | **Plan features** | `PLANS` array · offer checklist: `OFFER_FEATURES` |
-| **Contact details** | `SITE.contact` (email, phone, location, hours) — currently placeholders |
+| **Contact details** | `SITE.contact` (email, location, hours; phone comes from `PHONE`) |
 | **Social links** | `SITE.social` — leave `""` to show a muted placeholder; add only verified MNP APPS profiles |
 | **Offer deadline** | `SITE.offerEndsAt` — `null` = no countdown / no "ends today" claim. Set an ISO date only if the deadline is real. |
 | **Form delivery** | `SITE.formEndpoint` — e.g. a Formspree URL. Empty = the form sends the enquiry via WhatsApp. |
