@@ -68,12 +68,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <a href="#apps" className="btn-ghost !px-4 !py-2.5" aria-label="Get an app — jump to the mobile apps section">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <a href="#apps" className="btn-ghost hidden !px-4 !py-2.5 sm:inline-flex" aria-label="Get an app — jump to the mobile apps section">
             <Smartphone size={16} /> Get App
           </a>
-          <button type="button" className="btn-primary hidden !px-5 !py-2.5 sm:inline-flex" onClick={() => startEnquiry({})}>
-            Get Your Website
+          <button type="button" className="btn-primary !gap-1.5 !px-3.5 !py-2.5 !text-[13px] sm:!px-5 sm:!text-sm" onClick={() => startEnquiry({})}>
+            <span className="sm:hidden">Get Website</span>
+            <span className="hidden sm:inline">Get Your Website</span>
           </button>
           <button
             type="button"
@@ -112,6 +113,9 @@ export default function Navbar() {
                 </motion.li>
               ))}
               <li className="pt-3">
+                <a href="#apps" onClick={() => setOpen(false)} className="btn-ghost mb-3 w-full">
+                  <Smartphone size={16} /> Get App
+                </a>
                 <button
                   type="button"
                   className="btn-primary w-full"

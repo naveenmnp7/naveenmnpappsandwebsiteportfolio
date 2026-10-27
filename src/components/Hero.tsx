@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Gauge, MessageCircle, Search, Sparkles } from "lucide-react";
 import BrowserFrame from "./ui/BrowserFrame";
@@ -49,7 +50,25 @@ function FloatChip({ icon: Icon, label, className, delay }: { icon: typeof Gauge
   );
 }
 
+const CHIPS = [
+  { icon: Gauge, label: "Fast loading" },
+  { icon: Search, label: "SEO-friendly" },
+  { icon: MessageCircle, label: "WhatsApp ready" },
+];
+
+function useIsMobile() {
+  const [mobile, setMobile] = useState(() => typeof window !== "undefined" && window.matchMedia("(max-width: 639px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const on = () => setMobile(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return mobile;
+}
+
 export default function Hero() {
+  const isMobile = useIsMobile();
   const { startEnquiry } = useEnquiry();
   const { index, setIndex, setPaused, ref } = useRotatingIndex(TEMPLATES.length, 4500);
   const current = TEMPLATES[index];
@@ -71,11 +90,11 @@ export default function Hero() {
         <div className="absolute inset-0 [background-image:linear-gradient(rgba(255,255,255,.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.035)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_at_center,#000_30%,transparent_75%)]" />
       </div>
 
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-12 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-24 lg:pt-20">
-        <div>
+      <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-20 pt-8 sm:gap-12 sm:px-8 sm:pb-16 sm:pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-6 lg:pb-24 lg:pt-20">
+        <div className="text-center lg:text-left">
           <motion.span
             initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease }}
-            className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-cyan"
+            className="glass inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-cyan sm:px-4 sm:text-[11px] sm:tracking-[0.2em]"
           >
             <Sparkles size={13} /> Creative Web Development Agency
           </motion.span>
@@ -83,26 +102,26 @@ export default function Hero() {
           <motion.h1
             id="hero-title"
             initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1, ease }}
-            className="mt-6 font-display text-[2.4rem] font-extrabold uppercase leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[3.6rem]"
+            className="mt-5 font-display text-[2rem] font-extrabold uppercase leading-[1.08] min-[400px]:text-[2.3rem] tracking-tight text-white sm:mt-6 sm:text-5xl lg:text-[3.6rem]"
           >
             We build websites that <span className="text-gradient">grow your business.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.25, ease }}
-            className="mt-6 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg"
+            className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-slate-400 sm:mt-6 sm:text-lg lg:mx-0"
           >
             Premium websites. Modern designs. Affordable pricing. Let's turn your business into a powerful online brand.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease }}
-            className="mt-9 flex flex-col gap-3 sm:flex-row"
+            className="mt-7 flex flex-col gap-3 sm:mt-9 sm:flex-row sm:justify-center lg:justify-start"
           >
-            <a href="#portfolio" className="btn-primary group">
+            <a href="#portfolio" className="btn-primary group justify-center">
               Explore Our Work <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
             </a>
-            <button type="button" className="btn-ghost" onClick={() => startEnquiry({})}>
+            <button type="button" className="btn-ghost justify-center" onClick={() => startEnquiry({})}>
               Get Your Website
             </button>
           </motion.div>
@@ -110,13 +129,15 @@ export default function Hero() {
 
         {/* 3D-style monitor + phone */}
         <div className="relative mx-auto w-full max-w-[560px] [perspective:1400px]">
-          <FloatChip icon={Gauge} label="Fast loading" className="-left-2 top-6 sm:-left-8" delay={0} />
-          <FloatChip icon={Search} label="SEO-friendly" className="right-0 top-0 sm:-right-4" delay={0.6} />
-          <FloatChip icon={MessageCircle} label="WhatsApp ready" className="-bottom-2 left-4 sm:left-0" delay={1.2} />
+          <div className="hidden sm:block">
+            <FloatChip icon={Gauge} label="Fast loading" className="-left-8 top-6" delay={0} />
+            <FloatChip icon={Search} label="SEO-friendly" className="-right-4 top-0" delay={0.6} />
+            <FloatChip icon={MessageCircle} label="WhatsApp ready" className="-bottom-2 left-0" delay={1.2} />
+          </div>
 
           <motion.div
-            initial={{ opacity: 0, rotateY: -28, x: 40 }}
-            animate={{ opacity: 1, rotateY: -14, x: 0, y: [0, -12, 0] }}
+            initial={{ opacity: 0, rotateY: isMobile ? -10 : -28, x: isMobile ? 0 : 40, y: isMobile ? 30 : 0 }}
+            animate={{ opacity: 1, rotateY: isMobile ? -5 : -14, x: 0, y: [0, isMobile ? -6 : -12, 0] }}
             transition={{ opacity: { duration: 0.9, delay: 0.3 }, rotateY: { duration: 1.1, delay: 0.3, ease }, x: { duration: 1.1, delay: 0.3, ease }, y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.4 } }}
             style={{ transformStyle: "preserve-3d" }}
             className="relative"
@@ -148,7 +169,10 @@ export default function Hero() {
             <div className="mx-auto h-2 w-44 rounded-full bg-slate-700" />
           </motion.div>
 
-          <div className="mt-5 flex items-center justify-center gap-1" role="group" aria-label="Choose a sample website to preview">
+          <p className="mt-4 text-center text-xs font-medium text-slate-300 sm:hidden" aria-live="off">
+            <span className="text-brand-cyan">{current.name}</span> · sample {index + 1}/{TEMPLATES.length}
+          </p>
+          <div className="mt-2 flex items-center justify-center gap-1 sm:mt-5" role="group" aria-label="Choose a sample website to preview">
             {TEMPLATES.map((t, n) => (
               <button
                 key={t.id}
@@ -163,11 +187,23 @@ export default function Hero() {
             ))}
           </div>
 
+          <ul className="mt-5 flex flex-wrap justify-center gap-2 sm:hidden">
+            {CHIPS.map(({ icon: Icon, label }, n) => (
+              <motion.li
+                key={label}
+                initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + n * 0.12, duration: 0.5 }}
+                className="glass flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-semibold text-white"
+              >
+                <Icon size={12} className="text-brand-cyan" /> {label}
+              </motion.li>
+            ))}
+          </ul>
+
           <motion.div
             initial={{ opacity: 0, y: 60, rotate: 8 }}
             animate={{ opacity: 1, y: [0, -14, 0], rotate: 6 }}
             transition={{ opacity: { duration: 0.8, delay: 0.7 }, y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.6 }, rotate: { duration: 1, delay: 0.7 } }}
-            className="absolute -bottom-6 -right-1 z-10 w-[30%] min-w-[110px] sm:-right-8"
+            className="absolute -right-1 top-[28%] z-10 w-[24%] min-w-[84px] sm:-bottom-6 sm:-right-8 sm:top-auto sm:w-[30%] sm:min-w-[110px]"
           >
             <div className="glow-border rounded-[1.6rem] bg-ink-900 p-1.5 shadow-2xl shadow-black/60">
               <div className="relative aspect-[9/19] overflow-hidden rounded-[1.25rem]"><PhoneScreen /></div>
